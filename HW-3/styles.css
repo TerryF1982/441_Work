@@ -1,0 +1,64 @@
+body {
+    font-family: Arial, sans-serif;
+    background-image: url('images/castle.jpeg');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    height: 100vh;
+}
+
+h1 {
+    background-color: #2c3e50;
+    color: white;
+    padding: 20px;
+    font-size: 36px;
+    margin: 0;
+}
+
+#story {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 800px;
+    margin: 20px auto;
+    color: black;
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.choice-container {
+    margin: 10px 0;
+}
+
+.choice-container a {
+    display: inline-block;
+    background-color: #3498db;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+.choice-container a:hover {
+    background-color: #2c3e50;
+}
+
+#outcome {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 800px;
+    margin: 20px auto;
+    color: black;
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
