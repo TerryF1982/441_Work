@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Path to Valhalla</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Video Background -->
+  <video autoplay loop muted id="video-background">
+    <source src="images/intro.mov" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- Start Page -->
+  <div id="start-page">
+    <div class="start-container">
+      <h1>Welcome, Warrior!</h1>
+      <h2>What is your name? Do you have what it takes to drink with the gods in Valhalla?</h2>
+      <p>Enter your name, Viking:</p>
+      <input type="text" id="player-name" placeholder="Your Viking Name">
+      <br>
+      <button id="begin-quest-btn">Begin Quest</button>
+    </div>
+  </div>
+
+  <!-- Choose Weapon Page -->
+  <div id="choose-weapon-page" class="hidden">
+    <div class="choose-weapon-heading-container">
+      <h1 id="choose-weapon-heading">What is your weapon of choice, <span id="player-name-display"></span>?</h1>
+      <h2>Click to choose</h2>
+    </div>
+    
+    <div class="weapon-container">
+      <div class="weapon" id="sword" title="Choose sword and shield">
+        <img src="images/sword.jpeg" alt="Sword and Shield">
+      </div>
+      <div class="weapon" id="axe" title="Choose axe">
+        <img src="images/axe.jpeg" alt="Axe">
+      </div>
+    </div>
+  </div>
+
+  <!-- Axe Training Page -->
+  <div id="axe-training-page" class="hidden">
+    <div class="axe-training-text-container">
+        <h1>Axe Training</h1>
+        <p>You have proven yourself efficient enough for battle. </p>
+        <p>Are you ready for war? yes or no</p>
+        <input type="text" id="axe-answer" placeholder="Type your answer">
+        <button id="axe-next-btn">Next</button>
+    </div>
+  </div>
+
+  <!-- Sword Training Page -->
+  <div id="sword-training-page" class="hidden">
+    <div class="sword-training-text-container">
+      <h1>Sword Training</h1>
+      <p>You have proven yourself efficient enough for battle.</p>
+      <p>Are you ready for war? yes or no</p>
+      <input type="text" id="sword-answer" placeholder="Type your answer">
+      <button id="sword-next-btn">Next</button>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const playerNameInput = document.getElementById("player-name");
+        const playerNameDisplay = document.getElementById("player-name-display");
+        const startPage = document.getElementById("start-page");
+        const chooseWeaponPage = document.getElementById("choose-weapon-page");
+        const axeTrainingPage = document.getElementById("axe-training-page");
+        const swordTrainingPage = document.getElementById("sword-training-page");
+
+        const sailPage = document.createElement("div");
+        sailPage.id = "sail-page";
+        sailPage.classList.add("hidden");
+        sailPage.innerHTML = `
+            <div class="sail-container">
+                <h1>Setting Sail</h1>
+                <p>You have chosen to fight! The journey to battle begins.</p>
+                <h1> To be continued.....</h1>
+                <button id="sail-next-btn">Continue</button>
+            </div>
+        `;
+        document.body.appendChild(sailPage);
+
+        const gameOverPage = document.createElement("div");
+        gameOverPage.id = "game-over-page";
+        gameOverPage.classList.add("hidden");
+        gameOverPage.innerHTML = `
+            <div class="game-over-container">
+                <h1>Game Over</h1>
+                <p>You can stay here and cower with the children.</p>
+                <button id="restart-btn">Restart</button>
+            </div>
+        `;
+        document.body.appendChild(gameOverPage);
+
+        const videoBackground = document.getElementById("video-background");
+        const beginQuestBtn = document.getElementById("begin-quest-btn");
+        const axeNextBtn = document.getElementById("axe-next-btn");
+        const swordNextBtn = document.getElementById("sword-next-btn");
+
+        beginQuestBtn.addEventListener("click", function () {
+            const playerName = playerNameInput.value.trim();
+            if (playerName === "") {
+                alert("Please enter your Viking name.");
+                return;
+            }
+
+            localStorage.setItem("playerName", playerName);
+            playerNameDisplay.textContent = playerName;
+
+            videoBackground.style.display = "none"; 
+            startPage.style.display = "none";
+            chooseWeaponPage.style.display = "flex"; 
+        });
+
+        document.getElementById("sword").addEventListener("click", function () {
+            document.body.style.backgroundImage = "url('images/swordtraining.jpeg')";
+            document.body.style.backgroundSize = "cover";
+            document.body.style.backgroundPosition = "center";
+
+            chooseWeaponPage.style.display = "none";
+            axeTrainingPage.style.display = "none";
+
+            swordTrainingPage.classList.remove("hidden");
+            swordTrainingPage.style.display = "flex";
+        });
+
+        document.getElementById("axe").addEventListener("click", function () {
+            document.body.style.backgroundImage = "url('images/axetraining.jpeg')";
+            document.body.style.backgroundSize = "cover";
+            document.body.style.backgroundPosition = "center";
+
+            chooseWeaponPage.style.display = "none";
+            swordTrainingPage.style.display = "none";
+
+            axeTrainingPage.classList.remove("hidden");
+            axeTrainingPage.style.display = "flex";
+        });
+
+        function handleAnswer(inputField) {
+            const answer = inputField.value.trim().toLowerCase();
+
+            if (answer === "yes") {
+                axeTrainingPage.style.display = "none";
+                swordTrainingPage.style.display = "none";
+                gameOverPage.style.display = "none";
+
+                sailPage.classList.remove("hidden");
+                sailPage.style.display = "flex";
+                document.body.style.backgroundImage = "url('images/sail.jpeg')"; 
+            } else if (answer === "no") {
+                axeTrainingPage.style.display = "none";
+                swordTrainingPage.style.display = "none";
+                sailPage.style.display = "none";
+
+                gameOverPage.classList.remove("hidden");
+                gameOverPage.style.display = "flex";
+                document.body.style.backgroundImage = "url('images/gameover.jpeg')"; 
+            } else {
+                alert("Please enter 'yes' or 'no'.");
+            }
+        }
+
+        axeNextBtn.addEventListener("click", function () {
+            handleAnswer(document.getElementById("axe-answer"));
+        });
+
+        swordNextBtn.addEventListener("click", function () {
+            handleAnswer(document.getElementById("sword-answer"));
+        });
+
+        document.body.addEventListener("click", function (event) {
+            if (event.target.id === "restart-btn") {
+                location.reload(); 
+            }
+        });
+    });
+  </script>
+</body>
+</html>
