@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Memory Matching Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Memory Game</h1>
+  <p>Score: <span id="score">0</span> | Attempts: <span id="attempts">0</span></p>
+  
+  <!-- Container game board -->
+  <div class="game-container">
+    <div id="gameBoard"></div>
+  </div>
+
+  <script>
+    // blank image.
+    const blankImage = "images/blank.jpeg";
+
+    // Array for the actual matching images.
+    const images = [
+      "images/match1.jpeg",
+      "images/match2.jpeg",
+      "images/match3.jpeg",
+      "images/match4.jpeg",
+      "images/match5.jpeg",
+      "images/match6.jpeg"
+    ];
+
+    // Create an array of actual images (size 12) with each image appearing twice.
+    let actualArray = [];
+    images.forEach(img => {
+      actualArray.push(img);
+      actualArray.push(img);
+    });
+
+    // Shuffle the actualArray using the Fisher-Yates algorithm.
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+    shuffle(actualArray);
+
+    // Create the blank images array (size 12)
+    let blankArray = new Array(12).fill(blankImage);
+
+    const gameBoard = document.getElementById("gameBoard");
+    const scoreSpan = document.getElementById("score");
+    const attemptsSpan = document.getElementById("attempts");
+
+    // Game state variables
+    let firstCard = null;
+    let secondCard = null;
+    let lockBoard = false;
+    let score = 0;
+    let attempts = 0;
+
+    // Helper function to create a card element
+    function createCard(index) {
+      const imgElement = document.createElement("img");
+      // Initially show the blank image.
+      imgElement.src = blankArray[index];
+      imgElement.setAttribute("data-index", index);
+      imgElement.setAttribute("data-flipped", "false");
+      imgElement.addEventListener("click", cardClicked);
+      return imgElement;
+    }
+
+    // Function called when a card is clicked.
+    function cardClicked() {
+      if (lockBoard) return; // Prevent clicking while cards are processing.
+      const index = this.getAttribute("data-index");
+
+      // Prevent re-clicking a card that's already been matched/flipped.
+      if (this.getAttribute("data-flipped") === "true") return;
+
+      // Reveal the card.
+      this.src = actualArray[index];
+
+      // If this is the first card flipped in an attempt.
+      if (!firstCard) {
+        firstCard = this;
+        return;
+      }
+
+      // Second card flipped.
+      secondCard = this;
+      lockBoard = true;  // Lock board until we check for a match.
+      attempts++;
+      attemptsSpan.textContent = attempts;
+
+      // Check for a match.
+      if (firstCard.src === secondCard.src) {
+        // Match found.
+        firstCard.setAttribute("data-flipped", "true");
+        secondCard.setAttribute("data-flipped", "true");
+        score++;
+        scoreSpan.textContent = score;
+
+        resetTurn();
+
+        // Check if all pairs are matched.
+        if (score === images.length) {
+          // After a short delay, redirect to the summary page.
+          setTimeout(() => {
+            // Using query string to pass the attempt count.
+            window.location.href = `summary.html?attempts=${attempts}`;
+          }, 1000);
+        }
+      } else {
+        // Not a match: flip back after a delay.
+        setTimeout(() => {
+          firstCard.src = blankImage;
+          secondCard.src = blankImage;
+          resetTurn();
+        }, 1000);
+      }
+    }
+
+    // Resets the turn variables and unlocks the board.
+    function resetTurn() {
+      firstCard = null;
+      secondCard = null;
+      lockBoard = false;
+    }
+
+    // Initialize the board.
+    function initBoard() {
+      for (let i = 0; i < blankArray.length; i++) {
+        const card = createCard(i);
+        gameBoard.appendChild(card);
+      }
+    }
+
+    initBoard();
+  </script>
+</body>
+</html>
