@@ -1,121 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Path to Valhalla</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <h1>Will you make it to the great halls of Valhalla and drink with the gods?</h1>
-  
-  <div id="story">
-    <p>You are the mighty Ragnar, a Viking King chosen to lead your warriors to glory. You have heard rumors of an English village that is rich in gold and treasure. As you approach the village, you see that it is surrounded by a high wall, with guards patrolling the top.</p>
-    <p>Do you:</p>
-  
-    <div class="choice-container">
-      <a href="#" onclick="choosePath('attack')">Attack the village directly</a>
-    </div>
-    <div class="choice-container">
-      <a href="#" onclick="choosePath('sneak')">Sneak into the village under the cover of night</a>
-    </div>
-  </div>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-  <script>
-    let currentPath = '';
-    let outcome = document.getElementById('outcome');
-    let story = document.getElementById('story');
-    
-    function choosePath(path) {
-      currentPath = path;
-      if (path === 'attack') {
-        attackVillage();
-      } else if (path === 'sneak') {
-        sneakIntoVillage();
-      } else if (path === 'fight') {
-        fightKing();
-      } else if (path === 'ransom') {
-        ransomKing();
-      } else if (path === 'killKing') {
-        killKing();
-      } else if (path === 'hostage') {
-        hostageKing();
-      } else if (path === 'loot') {
-        lootTreasure();
-      } else if (path === 'takeOver') {
-        takeOverVillage();
-      } else if (path === 'forceToReveal') {
-        forceToRevealTreasure();
-      } else if (path === 'negotiate') {
-        negotiateRelease();
-      }
-    }
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding-top: 20px;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+}
 
-    function attackVillage() {
-      document.body.style.backgroundImage = "url('images/raid.jpeg')";
-      story.innerHTML = `
-        <p>You charge into the village. The English are caught off guard and are quickly overwhelmed. You fight your way through the village, taking down anyone who stands in your way.</p>
-        <p>As you reach the center of the village, you find the king. He is a large and fierce warrior, and he looks like he will not go down without a fight.</p>
-        <p>Do you:</p>
-        <div class="choice-container">
-          <a href="#" onclick="choosePath('fight')">Fight the King</a>
-        </div>
-        <div class="choice-container">
-          <a href="#" onclick="choosePath('ransom')">Take the King ransom</a>
-        </div>
-      `;
-      document.getElementById('story').className = 'attack';
-    }
+#scoreAttempts {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
 
-    function sneakIntoVillage() {
-      document.body.style.backgroundImage = "url('images/raid.jpeg')";
-      story.innerHTML = `
-        <p>You quickly and silently overtake the night guards and find the English king asleep in his bed. You could easily slit his throat and hunt for the treasure yourself. But without the king, you may not find what you seek.</p>
-        <p>Do you:</p>
-        <div class="choice-container">
-          <a href="#" onclick="choosePath('killKing')">Kill the King</a>
-        </div>
-        <div class="choice-container">
-          <a href="#" onclick="choosePath('hostage')">Take the King hostage</a>
-        </div>
-      `;
-      document.getElementById('story').className = 'sneak';
-    }
+.game-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80vw;
+  height: 70vh;
+  margin-top: 20px;
+}
 
-    function fightKing() {
-      document.body.style.backgroundImage = "url('images/victory.jpeg')";
-      story.innerHTML = `
-        <p>You fight fiercely with the king. After a long battle, you manage to defeat him. The villagers, overcome with fear, lead you to treasure. You will surely dine with the gods in Valhalla.</p>
-        <p>VICTORY!!!!</p>
-      `;
-    }
+#gameBoard {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+}
 
-    function ransomKing() {
-      document.body.style.backgroundImage = "url('images/dead.jpeg')";
-      story.innerHTML = `
-        <p>You take the king hostage and demand a ransom. But the villagers have no love for their cruel king. You never find the treasure, the gods laugh at you!!</p>
-        <p>FAIL!!!!</p>
-      `;
-    }
-
-    function killKing() {
-      document.body.style.backgroundImage = "url('images/treasure.jpeg')";
-      story.innerHTML = `
-        <p>You slit the king's throat silently. With his death, you gain access to his treasures hidden in the castle vault.</p>
-        <p>You collect the treasure, leaving the village behind. Your ship sets sail towards Valhalla, and the gods await your arrival.</p>
-      `;
-    }
-
-    function hostageKing() {
-      document.body.style.backgroundImage = "url('images/death1.jpeg')";
-      story.innerHTML = `
-        <p>You take the king hostage, demanding that he reveal the location of the treasure. He leads you into an ambush where the king's men overtake your men.</p>
-        <p>The king's men take you prisoner, you are tortured, then thrown into a pit of snakes. You will never find Valhalla.</p>
-      `;
-    }
-
-
-    
-  </script>
-</body>
-</html>
+#gameBoard img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: pointer;
+}
