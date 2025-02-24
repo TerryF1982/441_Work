@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Memory Game</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="form-container">
+    <h1>Welcome to the Memory Game</h1>
+    <form id="playerForm">
+      <label for="firstName">First Name:</label>
+      <input type="text" id="firstName" required />
+
+      <label for="lastName">Last Name:</label>
+      <input type="text" id="lastName" required />
+
+      <label for="age">Age:</label>
+      <input type="number" id="age" required />
+
+      <button type="submit">Start Game</button>
+    </form>
+  </div>
+
+  <div class="game-container" style="display:none;">
+    <h1>Memory Game</h1>
+    <div id="gameBoard"></div>
+  </div>
+  
+  <script>
+    document.getElementById("playerForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const playerData = {
+        firstName: document.getElementById("firstName").value,
+        lastName: document.getElementById("lastName").value,
+        age: document.getElementById("age").value,
+        attempts: 0
+      };
+
+      localStorage.setItem("playerData", JSON.stringify(playerData));
+      document.querySelector(".form-container").style.display = "none";
+      document.querySelector(".game-container").style.display = "block";
+      initBoard();
+    });
+
+    const blankImage = "images/blank.jpeg";
+    const allImages = [
+      "images/match1.jpeg", "images/match2.jpeg", "images/match3.jpeg",
+      "images/match4.jpeg", "images/match5.jpeg", "images/match6.jpeg",
+      "images/match7.jpeg", "images/match8.jpeg", "images/match9.jpeg",
+      "images/match10.jpeg"
+    ];
+
+    let selectedImages = [];
+    while (selectedImages.length < 6) {
+      const randomIndex = Math.floor(Math.random() * allImages.length);
+      const selectedImage = allImages[randomIndex];
+      if (!selectedImages.includes(selectedImage)) {
+        selectedImages.push(selectedImage);
+      }
+    }
+
+    let actualArray = [];
+    selectedImages.forEach(img => {
+      actualArray.push(img);
+      actualArray.push(img);
+    });
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+    shuffle(actualArray);
+
+    let blankArray = new Array(12).fill(blankImage);
+    const gameBoard = document.getElementById("gameBoard");
+
+    function createCard(index) {
+      const imgElement = document.createElement("img");
+      imgElement.src = blankArray[index];
+      imgElement.setAttribute("data-index", index);
+      imgElement.addEventListener("click", cardClicked);
+      return imgElement;
+    }
+
+    let flippedCards = [];
+    let matchedCards = 0;
+    let attempts = 0;
+    let boardLocked = false;
+
+    function cardClicked() {
+      if (boardLocked || this.classList.contains("flipped")) return;
+
+      const index = this.getAttribute("data-index");
+      this.src = actualArray[index];
+      this.classList.add("flipped");
+      flippedCards.push(this);
+
+      if (flippedCards.length === 2) {
+        boardLocked = true;
+        attempts++;
+        setTimeout(checkMatch, 1000);
+      }
+    }
+
+    function checkMatch() {
+      const [card1, card2] = flippedCards;
+      const index1 = card1.getAttribute("data-index");
+      const index2 = card2.getAttribute("data-index");
+
+      if (actualArray[index1] === actualArray[index2]) {
+        matchedCards++;
+        card1.removeEventListener("click", cardClicked);
+        card2.removeEventListener("click", cardClicked);
+      } else {
+        card1.src = blankImage;
+        card2.src = blankImage;
+        card1.classList.remove("flipped");
+        card2.classList.remove("flipped");
+        card1.style.pointerEvents = "auto";
+        card2.style.pointerEvents = "auto";
+      }
+
+      flippedCards = [];
+      boardLocked = false;
+
+      if (matchedCards === actualArray.length / 2) {
+        saveGameSummary();
+      }
+    }
+
+    function saveGameSummary() {
+      const playerData = JSON.parse(localStorage.getItem("playerData"));
+      playerData.attempts = attempts;
+      localStorage.setItem("playerData", JSON.stringify(playerData));
+      window.location.href = "summary.html";
+    }
+
+    function initBoard() {
+      gameBoard.innerHTML = "";
+      matchedCards = 0;
+      attempts = 0;
+      flippedCards = [];
+      boardLocked = false;
+      for (let i = 0; i < blankArray.length; i++) {
+        const card = createCard(i);
+        gameBoard.appendChild(card);
+      }
+    }
+  </script>
+</body>
+</html>

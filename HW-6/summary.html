@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Summary</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="summary-container">
+    <h1>Game Summary</h1>
+    <p id="summary"></p>
+    <button onclick="restartGame()">Restart Game</button>
+  </div>
+
+  <script>
+    const playerData = JSON.parse(localStorage.getItem('playerData'));
+    document.getElementById('summary').innerHTML = `
+      Name: ${playerData.firstName} ${playerData.lastName}<br>
+      Age: ${playerData.age}<br>
+      Attempts: ${playerData.attempts}
+    `;
+
+    function restartGame() {
+      localStorage.removeItem('playerData');
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>

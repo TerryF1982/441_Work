@@ -1,0 +1,131 @@
+body {
+  font-family: 'Courier New', monospace;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #001a00, #003300);
+  color: #33ff33;
+}
+
+.form-container {
+  background: linear-gradient(135deg, #002200, #004400);
+  padding: 40px;
+  width: 50%;
+  max-width: 500px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px #33ff33;
+  text-align: left;
+  border: 2px solid #33ff33;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+label {
+  font-weight: bold;
+  font-size: 16px;
+  color: #33ff33;
+}
+
+input {
+  padding: 10px;
+  font-size: 16px;
+  background: black;
+  color: #33ff33;
+  border: 1px solid #33ff33;
+  border-radius: 6px;
+  font-family: 'Courier New', monospace;
+}
+
+button {
+  background: black;
+  color: #33ff33;
+  font-size: 18px;
+  font-weight: bold;
+  border: 2px solid #33ff33;
+  padding: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s, box-shadow 0.3s;
+  font-family: 'Courier New', monospace;
+}
+
+button:hover {
+  background: #004400;
+  box-shadow: 0 0 10px #33ff33;
+}
+
+.game-container {
+  display: none;
+  background: black;
+  padding: 20px;
+  width: 60%;
+  max-width: 600px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px #33ff33;
+  border: 2px solid #33ff33;
+}
+
+#gameBoard {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  justify-items: center;
+}
+
+#gameBoard img {
+  width: 100px;
+  height: 100px;
+  margin: 5px;
+  border: 1px solid #33ff33;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+#gameBoard img:hover {
+  transform: scale(1.1);
+}
+
+.summary-container {
+  background: linear-gradient(135deg, #002200, #004400);
+  padding: 40px;
+  width: 50%;
+  max-width: 500px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px #33ff33;
+  text-align: left;
+  border: 2px solid #33ff33;
+}
+
+.summary-container h1 {
+  color: #33ff33;
+}
+
+.summary-container p {
+  color: #33ff33;
+  font-size: 18px;
+}
+
+.summary-container button {
+  background: black;
+  color: #33ff33;
+  font-size: 18px;
+  font-weight: bold;
+  border: 2px solid #33ff33;
+  padding: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+.summary-container button:hover {
+  background: #004400;
+  box-shadow: 0 0 10px #33ff33;
+}
