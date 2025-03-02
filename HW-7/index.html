@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>American Values</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="viewer">
+        <div class="lens-container">
+            <div class="lens left-lens">
+                <img id="left-image" src="" alt="American Values Image">
+            </div>
+            <div class="lens right-lens">
+                <img id="right-image" src="" alt="American Values Image">
+            </div>
+        </div>
+        <div class="button-container">
+            <button id="random-btn">Next Slide</button>
+        </div>
+        <div id="info">
+            <h2 id="art-title">Experience American Values Through Images</h2>
+            <p id="art-description"></p>
+            <p id="art-author"></p>
+        </div>
+    </div>
+
+    <script>
+        class Slide {
+            constructor(title, image, description, author, year) {
+                this.title = title;
+                this.image = image;
+                this.description = description;
+                this.author = author;
+                this.year = year;
+            }
+        }
+
+        const slides = [
+            new Slide("Back the Blue", "images/image1.jpeg", "A tribute to the men and women who protect our communities.", "Peter Christian", 2020),
+            new Slide("Border Security", "images/image2.jpeg", "Border enforcement is what makes a nation secure.", "Jane Smith", 2021),
+            new Slide("Support for Veterans", "images/image3.jpeg", "A community rally honoring those who served in the military.", "Jeff Haynes", 2013),
+            new Slide("Second Amendment Rights", "images/image4.jpeg", "The Right to Bear Arms is the only right that protects the other rights.", "Emanuel Leutze", 1851),
+            new Slide("Faith and Family", "images/image5.jpeg", "Religious freedom is the very foundation of the New World.", "Javier Art Photography", 2021)
+        ];
+
+        let currentIndex = 0;
+
+        function showNextSlide() {
+            const slide = slides[currentIndex];
+            document.getElementById("art-title").innerText = slide.title;
+            document.getElementById("left-image").src = slide.image;
+            document.getElementById("right-image").src = slide.image;
+            document.getElementById("art-description").innerText = slide.description;
+            document.getElementById("art-author").innerText = `By: ${slide.author} (${slide.year})`;
+            
+            currentIndex = (currentIndex + 1) % slides.length;
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById("random-btn").addEventListener("click", showNextSlide);
+            showNextSlide();
+        });
+    </script>
+</body>
+</html>
