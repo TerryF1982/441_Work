@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Terry Farrar">
-    <title>Exchange Rate Viewer</title>
+    <title>Exchange Rate</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="script.js" defer></script>
@@ -12,17 +12,14 @@
 </head>
 <body>
     <header>
-        <h1>Exchange Rate Viewer</h1>
+        <h1>Exchange Rate</h1>
     </header>
     <main>
         <label for="currency">Select a Currency:</label>
         <select id="currency">
             <option value="USD">USD - United States Dollar</option>
-            <!-- More currency options will be added dynamically -->
         </select>
-        <div id="exchange-data">
-            <!-- JSON data will be displayed here -->
-        </div>
+        <div id="exchange-data"></div>
     </main>
 </body>
 </html>
