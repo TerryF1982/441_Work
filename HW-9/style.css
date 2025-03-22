@@ -1,0 +1,41 @@
+/* General Page Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+/* Header */
+header {
+    background-color: #007bff;
+    color: white;
+    padding: 15px 0;
+    font-size: 24px;
+}
+
+/* Dropdown Styling */
+select {
+    padding: 8px;
+    margin: 15px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Exchange Rate Display */
+#exchange-data {
+    font-size: 20px;
+    margin-top: 20px;
+    padding: 15px;
+    background-color: white;
+    display: inline-block;
+    border-radius: 5px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Color Highlighting for Exchange Rates */
+#exchange-data p {
+    font-weight: bold;
+}
