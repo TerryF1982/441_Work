@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="author" content="Terry Farrar" />
+  <title>Space Blaster Game</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Space Blaster Game</h1>
+    <p>
+      🕹️ Use the <strong>Arrow Keys</strong> to move your green spaceship.<br />
+      🔫 Hold the <strong>Spacebar</strong> to rapid fire.<br />
+      🎯 Destroy all red targets to beat the level.<br />
+      💥 If a target touches your ship, its countdown resets.<br />
+      ⚠️ <strong>Warning:</strong> Colliding with a target will make it move faster!
+    </p>
+  </header>
+  <button id="playMusicBtn">🔊 Play Music</button>
+
+
+  <main>
+    <div id="hud">
+      <span id="levelDisplay">Level: 1</span>
+      <span id="targetsRemaining">Targets Remaining: 1</span>
+    </div>
+
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+  </main>
+
+  <div id="levelOverlay">
+    <div id="overlayContent">
+      <h2 id="overlayText">Level Complete!</h2>
+      <button id="nextLevelBtn">Next Level</button>
+    </div>
+  </div>
+
+  <audio id="bgMusic" src="audio/music.mp3" autoplay loop></audio>
+  <script src="script.js"></script>
+</body>
+</html>

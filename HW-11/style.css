@@ -1,0 +1,95 @@
+/* === Base Layout === */
+body {
+    margin: 0;
+    padding: 30px 0;
+    background-color: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* === Header and Instructions === */
+  header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  header h1 {
+    margin: 0;
+    font-size: 2em;
+    color: #222;
+  }
+  
+  header p {
+    margin: 5px 0 0;
+    font-size: 1.1em;
+    line-height: 1.6;
+    color: #333;
+  }
+  
+  /* === HUD Display === */
+  #hud {
+    width: 800px;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #222;
+    background-color: #eaeaea;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+  }
+  
+  /* === Canvas Styling === */
+  canvas {
+    background-color: #ffffff;
+    border: 8px solid #333;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* === Overlay for Level Complete === */
+  #levelOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+  }
+  
+  #overlayContent {
+    background: white;
+    padding: 30px 50px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 0 15px black;
+  }
+  
+  #overlayText {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  #nextLevelBtn {
+    font-size: 18px;
+    padding: 10px 20px;
+    border: none;
+    background-color: #28a745;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  #nextLevelBtn:hover {
+    background-color: #218838;
+  }
+  
