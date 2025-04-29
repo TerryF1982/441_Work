@@ -16,7 +16,6 @@ const config = {
 
 const game = new Phaser.Game(config);
 
-// Global variables
 let backgroundImage, title, storyText;
 let startButtonText, startButtonBackground, startButtonShadow;
 let music;
@@ -55,7 +54,6 @@ function showDisclaimer() {
     strokeThickness: 3
   }).setOrigin(0.5);
 
-  // Invisible full-screen button
   const disclaimerScreen = this.add.rectangle(config.width / 2, config.height / 2, config.width, config.height, 0x000000, 0)
     .setOrigin(0.5)
     .setInteractive();
@@ -91,7 +89,7 @@ function showIntro() {
     "The people believe in you. Freedom rides on your shoulders.\n\n" +
     "Godspeed, 47. The time is now.";
 
-  const storyY = config.height * 0.2; // Start higher up!
+  const storyY = config.height * 0.2;
 
   storyText = this.add.text(config.width / 2, storyY, story, {
     fontSize: '28px',
@@ -104,9 +102,8 @@ function showIntro() {
     wordWrap: { width: config.width * 0.8 }
   }).setOrigin(0.5, 0);
 
-  this.time.delayedCall(100, () => { // Wait one frame to get correct height
+  this.time.delayedCall(100, () => {
     const buttonY = storyText.y + storyText.height + 40;
-
     const buttonWidth = 300;
     const buttonHeight = 70;
     const buttonX = config.width / 2;

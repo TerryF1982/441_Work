@@ -5,22 +5,14 @@ class Level1 extends Phaser.Scene {
 
   preload() {
     this.load.image('background', 'images/background.png');
-    this.load.spritesheet('player', 'images/player.png', {
-      frameWidth: 257,
-      frameHeight: 256
-    });
+    this.load.spritesheet('player', 'images/player.png', { frameWidth: 257, frameHeight: 256 });
     this.load.image('bullet', 'images/bullet.png');
     this.load.audio('laser', 'audio/laser.mp3');
     this.load.audio('hit', 'audio/hit.mp3');
   }
 
   create() {
-    // Background that adjusts to the screen size
-    this.background = this.add.image(0, 0, 'background')
-      .setOrigin(0, 0)
-      .setDisplaySize(this.scale.width, this.scale.height);
-
-    // Listen for window resizing
+    this.background = this.add.image(0, 0, 'background').setOrigin(0, 0).setDisplaySize(this.scale.width, this.scale.height);
     this.scale.on('resize', this.resize, this);
 
     this.isGameStarted = false;
@@ -79,16 +71,12 @@ class Level1 extends Phaser.Scene {
     this.cursors = this.input.keyboard.createCursorKeys();
     this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
-    this.bullets = this.physics.add.group({
-      classType: Phaser.Physics.Arcade.Image,
-      runChildUpdate: true
-    });
+    this.bullets = this.physics.add.group({ classType: Phaser.Physics.Arcade.Image, runChildUpdate: true });
   }
 
   resize(gameSize) {
     const width = gameSize.width;
     const height = gameSize.height;
-
     if (this.background) {
       this.background.setDisplaySize(width, height);
     }
@@ -99,11 +87,7 @@ class Level1 extends Phaser.Scene {
     this.instructionText.destroy();
     this.startButton.destroy();
 
-    this.player = this.physics.add.sprite(
-      this.scale.width / 2,
-      this.scale.height - 64,
-      'player'
-    );
+    this.player = this.physics.add.sprite(this.scale.width / 2, this.scale.height - 64, 'player');
     this.player.setScale(0.8);
     this.player.setCollideWorldBounds(true);
     this.player.body.allowGravity = false;
@@ -112,29 +96,11 @@ class Level1 extends Phaser.Scene {
 
     this.player.setDepth(1);
 
-    this.anims.create({
-      key: 'walk-right',
-      frames: this.anims.generateFrameNumbers('player', { start: 8, end: 15 }),
-      frameRate: 10,
-      repeat: -1
-    });
-
-    this.anims.create({
-      key: 'walk-left',
-      frames: this.anims.generateFrameNumbers('player', { start: 24, end: 31 }),
-      frameRate: 10,
-      repeat: -1
-    });
-
-    this.anims.create({
-      key: 'idle',
-      frames: this.anims.generateFrameNumbers('player', { start: 0, end: 7 }),
-      frameRate: 5,
-      repeat: -1
-    });
+    this.anims.create({ key: 'walk-right', frames: this.anims.generateFrameNumbers('player', { start: 8, end: 15 }), frameRate: 10, repeat: -1 });
+    this.anims.create({ key: 'walk-left', frames: this.anims.generateFrameNumbers('player', { start: 24, end: 31 }), frameRate: 10, repeat: -1 });
+    this.anims.create({ key: 'idle', frames: this.anims.generateFrameNumbers('player', { start: 0, end: 7 }), frameRate: 5, repeat: -1 });
 
     this.player.anims.play('idle');
-
     this.spawnWord(this.words[this.wordIndex]);
   }
 
@@ -198,7 +164,6 @@ class Level1 extends Phaser.Scene {
       this.fireBullet();
     }
 
-    // Word movement and bouncing
     if (this.wordContainer) {
       this.wordContainer.x += this.wordVX / 60;
       this.wordContainer.y += this.wordVY / 60;
@@ -234,7 +199,6 @@ class Level1 extends Phaser.Scene {
       }
     }
 
-    // Bullets
     this.bullets.children.iterate(b => {
       if (!b.active) return;
       if (b.y < 0 || b.x < 0 || b.x > this.scale.width) {
@@ -276,11 +240,9 @@ class Level1 extends Phaser.Scene {
       b.body.enable = true;
     }
     b.body.allowGravity = false;
-
     b.setScale(0.1);
     b.setAngle(270);
     b.setVelocity(0, -500);
-
     this.sound.play('laser');
   }
 
@@ -291,32 +253,28 @@ class Level1 extends Phaser.Scene {
 
   showLevelCompleteScreen() {
     this.isGameStarted = false;
-    if (this.wordContainer) {
-      this.wordContainer.destroy();
-    }
+    if (this.wordContainer) this.wordContainer.destroy();
 
-    this.levelCompleteText = this.add.text(this.scale.width / 2, this.scale.height / 2 - 100,
-      'MISSION COMPLETE!', {
-        fontSize: '48px',
-        fill: '#00ff00',
-        fontFamily: 'Georgia, serif',
-        stroke: '#000000',
-        strokeThickness: 6
-      }).setOrigin(0.5);
+    this.levelCompleteText = this.add.text(this.scale.width / 2, this.scale.height / 2 - 100, 'MISSION COMPLETE!', {
+      fontSize: '48px',
+      fill: '#00ff00',
+      fontFamily: 'Georgia, serif',
+      stroke: '#000000',
+      strokeThickness: 6
+    }).setOrigin(0.5);
 
-    this.continueButton = this.add.text(this.scale.width / 2, this.scale.height / 2 + 50,
-      'CONTINUE', {
-        fontSize: '32px',
-        fill: '#ffffff',
-        backgroundColor: '#0000ff',
-        fontFamily: 'Georgia, serif',
-        padding: { x: 20, y: 10 },
-        stroke: '#000000',
-        strokeThickness: 4
-      })
-      .setOrigin(0.5)
-      .setInteractive({ useHandCursor: true })
-      .on('pointerdown', () => this.showTruthScreen());
+    this.continueButton = this.add.text(this.scale.width / 2, this.scale.height / 2 + 50, 'CONTINUE', {
+      fontSize: '32px',
+      fill: '#ffffff',
+      backgroundColor: '#0000ff',
+      fontFamily: 'Georgia, serif',
+      padding: { x: 20, y: 10 },
+      stroke: '#000000',
+      strokeThickness: 4
+    })
+    .setOrigin(0.5)
+    .setInteractive({ useHandCursor: true })
+    .on('pointerdown', () => this.showTruthScreen());
   }
 
   showTruthScreen() {
@@ -324,8 +282,7 @@ class Level1 extends Phaser.Scene {
     this.continueButton.destroy();
     this.background.destroy();
 
-    const bg = this.add.rectangle(0, 0, this.scale.width, this.scale.height, 0x000033)
-      .setOrigin(0);
+    const bg = this.add.rectangle(0, 0, this.scale.width, this.scale.height, 0x000033).setOrigin(0);
 
     const header = "⚠️ THE DANGER OF MEDIA LIES AND DISINFORMATION ⚠️\n\n" +
                    "False narratives have divided our country, create distrust, and manipulate public opinion.\nAlways seek the full truth.";
@@ -369,5 +326,4 @@ class Level1 extends Phaser.Scene {
   }
 }
 
-// Expose globally
 window.Level1 = Level1;
