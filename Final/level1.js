@@ -5,14 +5,22 @@ class Level1 extends Phaser.Scene {
 
   preload() {
     this.load.image('background', 'images/background.png');
-    this.load.spritesheet('player', 'images/player.png', { frameWidth: 257, frameHeight: 256 });
+    this.load.spritesheet('player', 'images/playerTrump.png', {
+      frameWidth: 256,
+      frameHeight: 512
+    });
     this.load.image('bullet', 'images/bullet.png');
     this.load.audio('laser', 'audio/laser.mp3');
     this.load.audio('hit', 'audio/hit.mp3');
+    this.load.audio('bgmusic', 'audio/bgmusic.mp3'); // ✅ preload background music
   }
 
   create() {
-    this.background = this.add.image(0, 0, 'background').setOrigin(0, 0).setDisplaySize(this.scale.width, this.scale.height);
+    const { width, height } = this.scale;
+
+    this.background = this.add.image(0, 0, 'background')
+      .setOrigin(0, 0)
+      .setDisplaySize(width, height);
     this.scale.on('resize', this.resize, this);
 
     this.isGameStarted = false;
@@ -22,40 +30,58 @@ class Level1 extends Phaser.Scene {
       "Russia Russia Russia",
       "Maryland Man",
       "Going to take Social Security",
-      "Its a Constitutional Crisis",
-      "He is a Fascist"
+      "Constitutional Crisis"
     ];
 
     this.truths = [
-      "The Russia narrative was heavily politicized and all claims were found to be outright lies.",
-      "Maryland Man' was an El Salvadorian gang member and part of a designated FTO (proven in court not once but twice FACTS!!).",
-      "No plan exists to eliminate Social Security; fear mongering distorts the truth and creates panic.",
-      "A constitution crisis is the judicial branch trying to overstep the power of the elected administrative branch...but nice try on that one.",
-      "Facism is going against what people voted for... sorry check your history books and the election results, your feelings don't count."
+      "The Russia collusion narrative was a heavily politicized narrative created by the left to try and undermine the office of the President of the United States. After several years and millions of taxpayer dollars wasted, all claims were proven to be outright lies.",
+      "‘Maryland Man’ was an El Salvadorian gang member and part of a designated FTO, who had legal and lawful deportation orders. He was not denied due process — in fact, two federal judges signed the orders. Facts over feelings.",
+      "No plan exists or has ever existed to eliminate Social Security; fear mongering distorts the truth and creates panic.",
+      "The real constitution crisis is the UNELECTED judicial branch trying to overstep the power of the ELECTED Administrative branch the Constitution lays out clear separation of powers."
     ];
 
-    const centerX = this.scale.width / 2;
-    const centerY = this.scale.height / 2;
-
-    const missionText =
-      "Controls:\n" +
-      "→ Arrow Keys: Move Left/Right\n" +
-      "Spacebar: Shoot straight up\n\n" +
-      "Mission:\n" +
-      "47, shoot down the lies to save freedom!";
-
-    this.instructionText = this.add.text(centerX, centerY - 100, missionText, {
-      fontSize: '22px',
-      fill: '#ffd700',
-      fontFamily: 'Georgia, serif',
-      align: 'center',
+    this.titleText = this.add.text(width / 2, height * 0.12, 'SHOOT DOWN THE LIES', {
+      fontSize: '48px',
+      fontFamily: 'Black Ops One',
+      fill: '#ff0000',
       stroke: '#000000',
-      strokeThickness: 4,
-      wordWrap: { width: this.scale.width * 0.85 },
-      backgroundColor: 'rgba(0,0,0,0.5)'
+      strokeThickness: 5
     }).setOrigin(0.5);
 
-    this.startButton = this.add.text(centerX, centerY + 160, 'START MISSION', {
+    const boxWidth = 540;
+    const boxHeight = 300;
+
+    this.instructionBox = this.add.graphics();
+    this.instructionBox.fillStyle(0x000000, 0.7);
+    this.instructionBox.fillRoundedRect(width / 2 - boxWidth / 2, height * 0.5 - boxHeight / 2, boxWidth, boxHeight, 20);
+    this.instructionBox.lineStyle(3, 0xffd700, 1);
+    this.instructionBox.strokeRoundedRect(width / 2 - boxWidth / 2, height * 0.5 - boxHeight / 2, boxWidth, boxHeight, 20);
+
+    const missionBody =
+      "[ CONTROLS ]\n" +
+      "→ LEFT / RIGHT ARROW KEYS to move\n" +
+      "⎵ SPACEBAR to shoot upward";
+
+    this.instructionText = this.add.text(width / 2, height * 0.5, missionBody, {
+      fontSize: '20px',
+      fontFamily: 'Georgia, serif',
+      fill: '#ffffff',
+      stroke: '#000000',
+      strokeThickness: 3,
+      align: 'center',
+      lineSpacing: 12,
+      wordWrap: { width: 500 }
+    }).setOrigin(0.5);
+
+    this.mottoText = this.add.text(width / 2, height * 0.82, 'THE TRUTH MUST PREVAIL', {
+      fontSize: '48px',
+      fontFamily: 'Black Ops One',
+      fill: '#ff0000',
+      stroke: '#000000',
+      strokeThickness: 5
+    }).setOrigin(0.5);
+
+    this.startButton = this.add.text(width / 2, height * 0.90, 'LEVEL 1', {
       fontSize: '28px',
       fill: '#ffffff',
       backgroundColor: '#ff0000',
@@ -85,32 +111,44 @@ class Level1 extends Phaser.Scene {
   startLevel() {
     this.isGameStarted = true;
     this.instructionText.destroy();
+    this.instructionBox.destroy();
     this.startButton.destroy();
+    this.titleText.destroy();
+    this.mottoText.destroy();
 
-    this.player = this.physics.add.sprite(this.scale.width / 2, this.scale.height - 64, 'player');
-    this.player.setScale(0.8);
+    this.player = this.physics.add.sprite(this.scale.width / 2, this.scale.height - 20, 'player');
+    this.player.setOrigin(0.5, 1);
+    this.player.setScale(0.3);
     this.player.setCollideWorldBounds(true);
     this.player.body.allowGravity = false;
     this.groundY = this.player.y;
     this.facing = 'idle';
-
     this.player.setDepth(1);
 
-    this.anims.create({ key: 'walk-right', frames: this.anims.generateFrameNumbers('player', { start: 8, end: 15 }), frameRate: 10, repeat: -1 });
-    this.anims.create({ key: 'walk-left', frames: this.anims.generateFrameNumbers('player', { start: 24, end: 31 }), frameRate: 10, repeat: -1 });
-    this.anims.create({ key: 'idle', frames: this.anims.generateFrameNumbers('player', { start: 0, end: 7 }), frameRate: 5, repeat: -1 });
+    this.anims.create({ key: 'walk-left', frames: this.anims.generateFrameNumbers('player', { start: 0, end: 1 }), frameRate: 10, repeat: -1 });
+    this.anims.create({ key: 'walk-right', frames: this.anims.generateFrameNumbers('player', { start: 0, end: 1 }), frameRate: 10, repeat: -1 });
+    this.anims.create({ key: 'idle', frames: [ { key: 'player', frame: 2 } ], frameRate: 1, repeat: -1 });
 
     this.player.anims.play('idle');
     this.spawnWord(this.words[this.wordIndex]);
+
+    // ✅ Play background music when level starts
+    this.bgmusic = this.sound.add('bgmusic', { loop: true, volume: 0.5 });
+    this.bgmusic.play();
   }
 
   spawnWord(word) {
     if (this.wordContainer) this.wordContainer.destroy();
 
-    this.wordContainer = this.add.container(200, 100);
+    this.wordContainer = this.add.container(0, 100);
     this.letters = [];
 
     const spacing = 40;
+    const wordLetters = word.replace(/ /g, '').length;
+    const totalWidth = spacing * wordLetters;
+    let startX = Phaser.Math.Clamp(Phaser.Math.Between(0, this.scale.width - totalWidth), 20, this.scale.width - totalWidth - 20);
+    this.wordContainer.x = startX;
+
     word.split('').forEach((c, i) => {
       if (c !== ' ') {
         const L = this.add.text(i * spacing, 0, c, {
@@ -135,7 +173,7 @@ class Level1 extends Phaser.Scene {
     const speed = 250;
     let moveLeft = this.cursors.left.isDown;
     let moveRight = this.cursors.right.isDown;
-    if (moveLeft && moveRight) { moveLeft = moveRight = false; }
+    if (moveLeft && moveRight) moveLeft = moveRight = false;
 
     this.player.setVelocityX(0);
 
@@ -181,22 +219,8 @@ class Level1 extends Phaser.Scene {
         }
       });
 
-      if (minX < 0) {
-        this.wordContainer.x += (0 - minX);
-        this.wordVX = -this.wordVX;
-      }
-      if (maxX > this.scale.width) {
-        this.wordContainer.x -= (maxX - this.scale.width);
-        this.wordVX = -this.wordVX;
-      }
-      if (minY < 0) {
-        this.wordContainer.y += (0 - minY);
-        this.wordVY = -this.wordVY;
-      }
-      if (maxY > this.scale.height * 0.7) {
-        this.wordContainer.y -= (maxY - this.scale.height * 0.7);
-        this.wordVY = -this.wordVY;
-      }
+      if (minX < 0 || maxX > this.scale.width) this.wordVX = -this.wordVX;
+      if (minY < 0 || maxY > this.scale.height * 0.7) this.wordVY = -this.wordVY;
     }
 
     this.bullets.children.iterate(b => {
@@ -219,12 +243,9 @@ class Level1 extends Phaser.Scene {
     this.letters = this.letters.filter(l => l);
 
     if (this.letters.length === 0 && this.wordContainer) {
+      this.wordContainer.destroy();
+      this.showLieTruthPopup(this.wordIndex);
       this.wordIndex++;
-      if (this.wordIndex < this.words.length) {
-        this.spawnWord(this.words[this.wordIndex]);
-      } else {
-        this.showLevelCompleteScreen();
-      }
     }
   }
 
@@ -251,9 +272,69 @@ class Level1 extends Phaser.Scene {
     this.time.delayedCall(200, () => c.destroy());
   }
 
+  showLieTruthPopup(index) {
+    this.isGameStarted = false;
+    const { width, height } = this.scale;
+
+    const box = this.add.graphics();
+    box.fillStyle(0x000000, 0.9);
+    box.fillRoundedRect(width / 2 - 300, height / 2 - 200, 600, 300, 20);
+    box.lineStyle(4, 0xff0000, 1);
+    box.strokeRoundedRect(width / 2 - 300, height / 2 - 200, 600, 300, 20);
+
+    const lieText = this.add.text(width / 2, height / 2 - 100, `❌ "${this.words[index]}"`, {
+      fontSize: '24px',
+      fill: '#ff4444',
+      fontFamily: 'Georgia, serif',
+      stroke: '#000000',
+      strokeThickness: 2,
+      align: 'center',
+      wordWrap: { width: 540 }
+    }).setOrigin(0.5);
+
+    const truthText = this.add.text(width / 2, height / 2, `✅ ${this.truths[index]}`, {
+      fontSize: '22px',
+      fill: '#44ff44',
+      fontFamily: 'Georgia, serif',
+      stroke: '#000000',
+      strokeThickness: 2,
+      align: 'center',
+      wordWrap: { width: 540 }
+    }).setOrigin(0.5);
+
+    const nextButton = this.add.text(width / 2, height / 2 + 110, 'FIGHT THE NEXT LIE', {
+      fontSize: '24px',
+      backgroundColor: '#ff0000',
+      fill: '#ffffff',
+      fontFamily: 'Georgia, serif',
+      padding: { x: 20, y: 10 },
+      stroke: '#000000',
+      strokeThickness: 3
+    })
+    .setOrigin(0.5)
+    .setInteractive({ useHandCursor: true })
+    .on('pointerdown', () => {
+      box.destroy();
+      lieText.destroy();
+      truthText.destroy();
+      nextButton.destroy();
+
+      if (this.wordIndex < this.words.length) {
+        this.spawnWord(this.words[this.wordIndex]);
+        this.isGameStarted = true;
+      } else {
+        this.showLevelCompleteScreen();
+      }
+    });
+  }
+
   showLevelCompleteScreen() {
     this.isGameStarted = false;
-    if (this.wordContainer) this.wordContainer.destroy();
+
+    // ✅ Stop background music at end of level
+    if (this.bgmusic && this.bgmusic.isPlaying) {
+      this.bgmusic.stop();
+    }
 
     this.levelCompleteText = this.add.text(this.scale.width / 2, this.scale.height / 2 - 100, 'MISSION COMPLETE!', {
       fontSize: '48px',
@@ -274,55 +355,7 @@ class Level1 extends Phaser.Scene {
     })
     .setOrigin(0.5)
     .setInteractive({ useHandCursor: true })
-    .on('pointerdown', () => this.showTruthScreen());
-  }
-
-  showTruthScreen() {
-    this.levelCompleteText.destroy();
-    this.continueButton.destroy();
-    this.background.destroy();
-
-    const bg = this.add.rectangle(0, 0, this.scale.width, this.scale.height, 0x000033).setOrigin(0);
-
-    const header = "⚠️ THE DANGER OF MEDIA LIES AND DISINFORMATION ⚠️\n\n" +
-                   "False narratives have divided our country, create distrust, and manipulate public opinion.\nAlways seek the full truth.";
-
-    this.add.text(this.scale.width / 2, 80, header, {
-      fontSize: '36px',
-      fill: '#ffd700',
-      fontFamily: 'Georgia, serif',
-      stroke: '#000000',
-      strokeThickness: 6,
-      align: 'center',
-      wordWrap: { width: this.scale.width * 0.9 }
-    }).setOrigin(0.5);
-
-    let startY = 240;
-    const lineSpacing = 100;
-
-    this.words.forEach((lie, idx) => {
-      this.add.text(this.scale.width / 2, startY, `❌ "${lie}"`, {
-        fontSize: '24px',
-        fill: '#ff4444',
-        fontFamily: 'Georgia, serif',
-        stroke: '#000000',
-        strokeThickness: 3,
-        align: 'center',
-        wordWrap: { width: this.scale.width * 0.8 }
-      }).setOrigin(0.5);
-
-      this.add.text(this.scale.width / 2, startY + 40, `✅ ${this.truths[idx]}`, {
-        fontSize: '22px',
-        fill: '#44ff44',
-        fontFamily: 'Georgia, serif',
-        stroke: '#000000',
-        strokeThickness: 3,
-        align: 'center',
-        wordWrap: { width: this.scale.width * 0.8 }
-      }).setOrigin(0.5);
-
-      startY += lineSpacing;
-    });
+    .on('pointerdown', () => this.scene.start('Level2'));
   }
 }
 
